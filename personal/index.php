@@ -6,17 +6,8 @@ session_start();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /login.php');
+    exit();
 }
-
-$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$user = $stmt->fetch();
-
-$articles = $pdo->query("SELECT articles.*, categories.name AS category, users.login AS user
-FROM articles
-JOIN categories ON articles.category_id = categories.id
-JOIN users ON articles.user_id = users.id
-WHERE articles.is_moderated IS TRUE")->fetchAll();
 ?>
 
 <!doctype html>
@@ -26,7 +17,7 @@ WHERE articles.is_moderated IS TRUE")->fetchAll();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Главная</title>
+    <title>Профиль</title>
 </head>
 
 <style>
@@ -48,40 +39,12 @@ WHERE articles.is_moderated IS TRUE")->fetchAll();
 
 <body>
 
-<h1>Главная</h1>
-<h2>Привет, <?= $user['login'] ?></h2>
+<h1>Профиль</h1>
 
+<a href="/">Главная</a>
 <a href="/personal/articles/">Статьи</a>
 
 <a href="/auth/logout.php">Выйти</a>
-
-<table>
-    <thead>
-    <tr>
-        <th>Название</th>
-        <th>Содержание</th>
-        <th>Дата создание</th>
-        <th>Категория</th>
-        <th>Пользователь</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <?php foreach ($articles as $article): ?>
-        <tr>
-            <td><?= $article['name'] ?></td>
-            <td><?= $article['text'] ?></td>
-            <td><?= $article['created_at'] ?></td>
-            <td><?= $article['category'] ?></td>
-            <td><?= $article['user'] ?></td>
-            <?php if ($article['user_id'] == $_SESSION['user_id']): ?>
-                <td><a href="/personal/articles/edit.php?id=<?= $article['id'] ?>">Изменить</a></td>
-                <td><a href="/personal/articles/actions/delete.php?id=<?= $article['id'] ?>">Удалить</a></td>
-            <?php endif; ?>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
 
 </body>
 </html>

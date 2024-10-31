@@ -1,0 +1,22 @@
+header {
+  padding: 2rem;
+
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 10rem;
+
+    a {
+      padding: .3em 1em;
+
+      color: #000;
+      background-color: $back;
+
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+
+      font-size: 3rem;
+    }
+  }
+}

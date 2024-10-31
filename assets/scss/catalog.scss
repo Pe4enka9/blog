@@ -1,0 +1,67 @@
+.catalog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 50px;
+}
+
+.card {
+  width: 50%;
+
+  padding: 3rem;
+
+  background-color: #efefef;
+
+  border: 2px solid $border;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+
+  h2 {
+    font-size: 3rem;
+  }
+
+  .card__content div {
+    color: #808080;
+    font-size: 1.8rem;
+  }
+
+  p {
+    margin: 2em 0;
+    font-size: 1.4rem;
+  }
+
+  .more {
+    display: flex;
+    justify-content: flex-end;
+
+    a {
+      width: fit-content;
+
+      padding: .5em 1.3em;
+
+      display: block;
+
+      color: #000;
+      background-color: $back;
+
+      -webkit-border-radius: 10px;
+      -moz-border-radius: 10px;
+      border-radius: 10px;
+
+      font-size: 1.4rem;
+
+      transition: background-color .3s ease;
+
+      &:hover {
+        background-color: $backHover;
+      }
+    }
+  }
+
+  time {
+    color: #808080;
+    font-size: 1.2rem;
+  }
+}

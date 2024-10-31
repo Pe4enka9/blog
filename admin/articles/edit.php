@@ -1,6 +1,6 @@
 <?php
 /** @var PDO $pdo */
-$pdo = require_once $_SERVER['DOCUMENT_ROOT'] . '/db.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/check_admin.php';
 
 $article = $pdo->prepare("SELECT id, is_moderated FROM articles WHERE id = ?");
 $article->execute([$_GET['id'] ?? '']);

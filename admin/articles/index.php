@@ -1,10 +1,11 @@
 <?php
 /** @var PDO $pdo */
-$pdo = require_once $_SERVER['DOCUMENT_ROOT'] . '/db.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/check_admin.php';
 
-$articles = $pdo->query("SELECT articles.*, categories.name AS category
-FROM articles JOIN categories
-ON articles.category_id = categories.id")->fetchAll();
+$articles = $pdo->query("SELECT articles.*, categories.name AS category, users.login AS user
+FROM articles
+    JOIN categories ON articles.category_id = categories.id
+    JOIN users ON articles.user_id = users.id")->fetchAll();
 ?>
 
 <!doctype html>
@@ -40,6 +41,7 @@ ON articles.category_id = categories.id")->fetchAll();
         <th>Дата создания</th>
         <th>Модерировано</th>
         <th>Категория</th>
+        <th>Автор</th>
     </tr>
     </thead>
 
@@ -52,6 +54,7 @@ ON articles.category_id = categories.id")->fetchAll();
         <td><?= $article['created_at'] ?></td>
         <td><?= $article['is_moderated'] ? 'Да' : 'Нет' ?></td>
         <td><?= $article['category'] ?></td>
+        <td><?= $article['user'] ?></td>
         <td><a href="/admin/articles/edit.php?id=<?= $article['id'] ?>">Изменить</a></td>
     </tr>
     <?php endforeach; ?>

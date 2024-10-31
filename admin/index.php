@@ -1,3 +1,7 @@
+<?php
+require $_SERVER['DOCUMENT_ROOT'] . '/admin/check_admin.php';
+?>
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -8,6 +12,8 @@
     <title>Главная</title>
 </head>
 <body>
+
+<a href="/auth/logout.php">Выйти</a>
 
 <h1>Главная</h1>
 

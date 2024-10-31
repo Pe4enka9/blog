@@ -4,10 +4,12 @@ $pdo = require_once $_SERVER['DOCUMENT_ROOT'] . '/db.php';
 
 session_start();
 
-$articles = $pdo->query("SELECT articles.*, categories.name AS category, users.login AS user
+$articles = $pdo->prepare("SELECT articles.*, categories.name AS category
 FROM articles
 JOIN categories ON articles.category_id = categories.id
-JOIN users ON articles.user_id = users.id")->fetchAll();
+WHERE articles.user_id = ?");
+$articles->execute([$_SESSION['user_id']]);
+$articles = $articles->fetchAll();
 ?>
 
 <!doctype html>
@@ -17,7 +19,7 @@ JOIN users ON articles.user_id = users.id")->fetchAll();
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Статьи</title>
+    <title>Мои статьи</title>
 </head>
 
 <style>
@@ -36,7 +38,7 @@ JOIN users ON articles.user_id = users.id")->fetchAll();
 
 <a href="/personal/">Назад</a>
 
-<h1>Статьи</h1>
+<h1>Мои статьи</h1>
 
 <a href="/personal/articles/create.php">Добавить статью</a>
 
@@ -45,9 +47,8 @@ JOIN users ON articles.user_id = users.id")->fetchAll();
     <tr>
         <th>Название</th>
         <th>Содержание</th>
-        <th>Дата создание</th>
+        <th>Дата создания</th>
         <th>Категория</th>
-        <th>Пользователь</th>
     </tr>
     </thead>
 
@@ -58,11 +59,8 @@ JOIN users ON articles.user_id = users.id")->fetchAll();
         <td><?= $article['text'] ?></td>
         <td><?= $article['created_at'] ?></td>
         <td><?= $article['category'] ?></td>
-        <td><?= $article['user'] ?></td>
-        <?php if ($article['user_id'] == $_SESSION['user_id']): ?>
         <td><a href="/personal/articles/edit.php?id=<?= $article['id'] ?>">Изменить</a></td>
         <td><a href="/personal/articles/actions/delete.php?id=<?= $article['id'] ?>">Удалить</a></td>
-        <?php endif; ?>
     </tr>
     <?php endforeach; ?>
     </tbody>
